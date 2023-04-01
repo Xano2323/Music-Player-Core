@@ -1,0 +1,461 @@
+﻿<Window x:Class="Music_Player.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        
+        Title="Music Player" 
+        Style="{StaticResource MainWindow}" 
+        Height="800" 
+        Width="1400" 
+        Loaded="Window_Loaded"
+        Closing="Window_Closing"
+        KeyUp="Window_KeyUp"
+        KeyDown="Window_KeyDown"
+        PreviewKeyDown="Window_PreviewKeyDown">
+
+
+    <!-- Main Grid -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Music Media and settings + Currently Playing Music Information Row -->
+            <RowDefinition Height="140"/>
+
+            <!-- Music lists and listed musics -->
+            <RowDefinition Height="1*"/>
+
+            <!-- Footer -->
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <!-- Music Media and settings + Currently Playing Music Information Row -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" x:Name="GridMusicPlayerColumnWidth"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Music Media and settings -->
+            <Border x:Name="MediaElementHolder_Border"
+                    Style="{StaticResource MainBorder}" 
+                    BorderThickness="1" 
+                    Grid.Column="0" 
+                    AllowDrop="True">
+
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+
+                    <MediaElement x:Name="Music_MediaElement"
+                                  Visibility="Hidden"
+                                  LoadedBehavior="Manual"
+                                  UnloadedBehavior="Manual"/>
+
+                    <!-- Music name and timer -->
+                    <Rectangle Width="5" HorizontalAlignment="Left" Margin="-5,0,0,0" Grid.ZIndex="1" Fill="{StaticResource BlackBackgroundGradient}"/>
+                    <Rectangle Width="5" HorizontalAlignment="Right" Margin="0,0,-5,0" Grid.ZIndex="1" Fill="{StaticResource BlackBackgroundGradient}"/>
+                    <Border BorderBrush="#FF9B9B9B" BorderThickness="2,2,0,2" Background="#FF292929" Width="6" CornerRadius="5,0,0,5" Grid.ZIndex="2" HorizontalAlignment="Left"/>
+                    <Border BorderBrush="#FF9B9B9B" BorderThickness="0,2,2,2" Background="#FF292929" Width="6" CornerRadius="0,5,5,0" Grid.ZIndex="2" HorizontalAlignment="Right"/>
+                    <Border BorderBrush="#FF9B9B9B" BorderThickness="2" Background="#FF292929" CornerRadius="5" Grid.ZIndex="0">
+                        <TextBlock Style="{StaticResource NormalTextBlock}" Grid.ZIndex="0"
+                               Margin="5,0,0,0" x:Name="MusicName_TextBlock">
+                            <TextBlock.Resources>
+                                <Storyboard RepeatBehavior="Forever" x:Key="Storyboard">
+                                    <ThicknessAnimation Storyboard.TargetName="MusicName_TextBlock" Storyboard.TargetProperty="(TextBlock.Margin)"/>
+                                    <ThicknessAnimation Storyboard.TargetName="MusicName_TextBlock" Storyboard.TargetProperty="(TextBlock.Margin)"/>
+                                </Storyboard>
+                            </TextBlock.Resources>
+                        </TextBlock>
+                    </Border>
+
+                    <Slider x:Name="MusicTimer_Slider"
+                            Style="{StaticResource Music_Slider}"
+                            Grid.Row="0" 
+                            Grid.ZIndex="5" 
+                            Margin="2,2,2,2"
+                            VerticalAlignment="Center" 
+                            Height="30" />
+
+                    <Slider x:Name="PreviewMusicTimer_Slider"
+                            Style="{StaticResource PreviewMusic_Slider}"
+                            Grid.Row="0" 
+                            Grid.ZIndex="5" 
+                            Margin="2,2,2,2"
+                            VerticalAlignment="Center" 
+                            Height="30" />
+
+                    <!-- Media controlling buttons -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="55"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="55"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" VerticalAlignment="Center" Visibility="Hidden" HorizontalAlignment="Left"  x:Name="CurrentDuration_TextBlock"/>
+                        <TextBlock Grid.Column="2" VerticalAlignment="Center" Visibility="Hidden" HorizontalAlignment="Right" x:Name="MaxDuration_TextBlock"/>
+
+                        <Grid Grid.Column="1" Margin="34,3" VerticalAlignment="Center" x:Name="MediaButtons_Grid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Style="{StaticResource MusicControler_Button}" Grid.Column="0" BorderThickness="1">
+                                <Button.Content>
+                                    <Image Source="pack://application:,,,/Resources/Previous.png"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           ToolTip="Previous Music"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Style="{StaticResource MusicControler_Button}" Grid.Column="1" BorderThickness="0,1,1,1">
+                                <Button.Content>
+                                    <Image Source="pack://application:,,,/Resources/Restart.png"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           ToolTip="Restart Music"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Style="{StaticResource MusicControler_Button}" Grid.Column="2" BorderThickness="0,1,1,1">
+                                <Button.Content>
+                                    <Image Source="pack://application:,,,/Resources/Stop.png"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           ToolTip="Stop Music"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Style="{StaticResource MusicControler_Button}" Grid.Column="3" BorderThickness="0,1,1,1">
+                                <Button.Content>
+                                    <Image Source="pack://application:,,,/Resources/Play.png"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           ToolTip="Play/Pause Music"/>
+                                </Button.Content>
+                            </Button>
+                            <Button Style="{StaticResource MusicControler_Button}" Grid.Column="4" BorderThickness="0,1,1,1">
+                                <Button.Content>
+                                    <Image Source="pack://application:,,,/Resources/Next.png"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           ToolTip="Next Music"/>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+                    </Grid>
+
+                    <!-- Volume and playback speed -->
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0" ToolTip="Playback speed">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="35"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Slider Grid.Column="0" Style="{StaticResource Other_Slider}" x:Name="PlaybackSpeed_Slider"
+                                    Minimum="0.1" Maximum="5" SmallChange="0.05" Value="1"/>
+
+                            <TextBlock Style="{StaticResource NormalTextBlock}" 
+                                       Text="x" 
+                                       HorizontalAlignment="Center" 
+                                       Grid.Column="1"
+                                       x:Name="PlaybackSpeedDisplay_TextBlock"/>
+                        </Grid>
+
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Style="{StaticResource MusicControler_Button}" Width="32" Height="20" VerticalAlignment="Center" x:Name="MuteUnmute_Button">
+                                <Image Grid.Column="0" Source="pack://application:,,,/Resources/Unmuted.png" 
+                                   RenderOptions.BitmapScalingMode="HighQuality" ToolTip="Mute/Unmute"/>
+                            </Button>
+
+
+                            <Grid Grid.Column="1" ToolTip="Volume">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="35"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Slider Grid.Column="0" Style="{StaticResource Other_Slider}" x:Name="Volume_Slider"
+                                    Minimum="0" Maximum="100" SmallChange="5" LargeChange="5" Value="100"/>
+
+                                <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Column="1" Text="%" 
+                                           HorizontalAlignment="Center" x:Name="VolumeDisplay_TextBlock"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <!-- Next music options, randomization, jump to music on list buttons -->
+                    <Grid Grid.Row="4" Width="78">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="26"/>
+                            <ColumnDefinition Width="26"/>
+                            <ColumnDefinition Width="26"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Style="{StaticResource MusicControler_Button}" BorderThickness="1,1,1,1"
+                                Width="22" Height="19" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1" Margin="0,0,-119,-1" Click="JumpToMusic_Button_Click">
+                            <Image Source="pack://application:,,,/Resources/Strzala.png"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           ToolTip="Scroll To Music"/>
+                        </Button>
+
+                        <Button Style="{StaticResource MusicControler_Button}" Grid.Column="0" BorderThickness="1,1,1,1" 
+                            Width="22" Height="19" Margin="0,2,0,0"
+                            Click="RandomSwitchOnOff_Button_Click" x:Name="RandomOptionChange_Button">
+                            <Image Source="pack://application:,,,/Resources/Random Off.png" x:Name="Random_Image"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           ToolTip="Switches Randomization Option"/>
+                        </Button>
+                        <Button Style="{StaticResource MusicControler_Button}" Grid.Column="1" BorderThickness="1,1,1,1" 
+                            Width="22" Height="19" Margin="0,2,0,0"
+                            Click="RandomStyle_Button_Click"  x:Name="RandomStyle_Button">
+                            <Image Source="pack://application:,,,/Resources/Next Weighted.png" x:Name="RandomStyle_Image"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           ToolTip="Switches Randomization Style"/>
+                        </Button>
+                        <Button Style="{StaticResource MusicControler_Button}" Grid.Column="2" BorderThickness="1,1,1,1" 
+                            Width="22" Height="19" Margin="0,2,0,0"
+                            Click="Loop_Button_Click"  x:Name="Loop_Button">
+                            <Image Source="pack://application:,,,/Resources/Loop Not.png" x:Name="Loop_Image" Height="19" VerticalAlignment="Center"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           ToolTip="Loops current music"/>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- Currently Playing Music Informations -->
+            <Border Style="{StaticResource MainBorder}" BorderThickness="0,1,1,1" Grid.Column="1">
+                <Grid x:Name="MusicInformation_Grid" Visibility="Visible">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="135"/>
+                        <ColumnDefinition Width="400"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Image Width="125" Height="125" Margin="5" x:Name="AlbumCover_Image" RenderOptions.BitmapScalingMode="HighQuality" MouseDown="AlbumCover_Image_MouseDown"/>
+                    </Grid>
+
+                    <Grid Grid.Column="1" Margin="5,5,5,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="0" Text="Full Name"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="1" Text="Author"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="2" Text="Music Name"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="3" Text="Wideo Link"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="4" Text="Groups"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="5" Text="Tags"/>
+                        </Grid>
+
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="0"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="1"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="2"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="3"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="4"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="5"/>
+                        </Grid>
+                    </Grid>
+
+                    <Grid Grid.Column="2" Margin="5,5,5,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="0" Text="Rating"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="1" Text="Music Length"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="2" Text="Creation Time"/>
+                        </Grid>
+
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="0"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="1"/>
+                            <TextBlock Style="{StaticResource NormalTextBlock}" Grid.Row="2"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- List of playlists, list of musics from choosen playlist -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- List of Playlists -->
+            <Border Style="{StaticResource MainBorder}" BorderThickness="1,0,1,1" Grid.Column="0">
+                <Grid x:Name="Gridziak" Margin="0,-1,0,-1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="0"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="0"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- New Playlist -->
+                    <Border Style="{StaticResource BorderListTitle}" BorderThickness="0,1,0,1" Grid.Row="0" Margin="0,0,0,-1">
+                        <Grid>
+                            <TextBlock Style="{StaticResource TitleTextBlock}" Text="Playlists"/>
+                            <Button Width="30" HorizontalAlignment="Right" Click="AddNewPlaylist_Button_Click" BorderThickness="0" Background="Transparent" ToolTip="Add new playlist">
+                                <Image Source="pack://application:,,,/Resources/Plus.png"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <!-- Playlists placeholder -->
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Visibility="Visible" x:Name="Playlists_ScrollViewer">
+                        <StackPanel Orientation="Vertical" Margin="0,6" x:Name="Playlists_StackPanel">
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <!-- Musics from choosen playlist -->
+            <Border Style="{StaticResource MainBorder}" BorderThickness="0,0,1,1" Grid.Column="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="0" x:Name="SearchPanel_RowDefinition"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Musics Header -->
+                    <Border Background="{StaticResource LightBlackColor}" Height="30" BorderBrush="{StaticResource MainBorder_Color}" BorderThickness="0,0,0,1" Grid.Row="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="45"/>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="160"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Style="{StaticResource InnerBorder}" Grid.Column="0">
+                                <TextBlock Style="{StaticResource TitleTextBlock}" Text="ID"/>
+                            </Border>
+
+                            <Border Style="{StaticResource InnerBorder}" Grid.Column="1">
+                                <TextBlock Style="{StaticResource TitleTextBlock}" Text="Music Name"/>
+                            </Border>
+
+                            <Border Style="{StaticResource InnerBorder}" Grid.Column="2">
+                                <TextBlock Style="{StaticResource TitleTextBlock}" Text="Duration"/>
+                            </Border>
+
+                            <Border Style="{StaticResource InnerBorder}" Grid.Column="3">
+                                <TextBlock Style="{StaticResource TitleTextBlock}" Text="Rating"/>
+                            </Border>
+
+                            <Border Style="{StaticResource InnerBorder}" Grid.Column="4">
+                                <TextBlock Style="{StaticResource TitleTextBlock}" Text="Creation Time"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- Musics Placeholder -->
+                    <ScrollViewer x:Name="MusicList_ScrollViewer"
+                                  Grid.Row="1" 
+                                  VerticalScrollBarVisibility="Auto" 
+                                  HorizontalScrollBarVisibility="Disabled" 
+                                  AllowDrop="True"
+                                  MouseEnter="MusicList_ScrollViewer_MouseEnter"
+                                  MouseLeave="MusicList_ScrollViewer_MouseLeave">
+
+                        <StackPanel Orientation="Vertical"/>
+                    </ScrollViewer>
+
+                    <!-- Search panel -->
+                    <Border Style="{StaticResource MainBorder}" BorderThickness="0,1,0,0" Grid.Row="2" Visibility="Hidden" x:Name="SearchPanel_Border" VerticalAlignment="Bottom">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="250"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="45"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Style="{StaticResource TitleTextBlock}" Text="Search"/>
+                            <TextBox Grid.Column="1" Margin="5,5" x:Name="SearchInputField_TextBox" VerticalContentAlignment="Center"/>
+                            <TextBox Grid.Column="2" Margin="5,5" x:Name="SearchRating_TextBox" VerticalContentAlignment="Center"/>
+                            <Button Grid.Column="3" Style="{StaticResource Regular_Button}" Margin="5,5" Content="Search" x:Name="SearchButton" VerticalContentAlignment="Center"/>
+                            <Button Grid.Column="4" Style="{StaticResource Regular_Button}" Margin="5,5" Content="Cancel" x:Name="CancelSearchingButton" VerticalContentAlignment="Center"/>
+                            <Button Grid.Column="6" Background="Transparent" BorderThickness="0" ToolTip="Close Search Panel" x:Name="CloseSearchPanel_Button" VerticalContentAlignment="Center">
+                                <Image Margin="0,2" Source="pack://application:,,,/Resources/Cancel.png"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Logger -->
+        <Border Style="{StaticResource MainBorder}" BorderThickness="1,0,1,1" Grid.Row="2" x:Name="Logger_Border">
+            <TextBlock Style="{StaticResource NormalTextBlock}" x:Name="Logger_TextBlock" Margin="5,0,5,0"/>
+        </Border>
+    </Grid>
+</Window>

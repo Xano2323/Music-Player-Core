@@ -1,0 +1,383 @@
+﻿<Application x:Class="Music_Player.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Music_Player"
+             Startup="Application_Startup">
+    <Application.Resources>
+        
+        <!--========================================================-->
+        <!--======================== COLORS ========================-->
+        <!--========================================================-->
+        
+        <SolidColorBrush x:Key="DefaultForeground" Color="WhiteSmoke"/>
+
+        <Color x:Key="DefaultBackgroundColor">
+            #FF36363A
+        </Color>
+
+        <!-- Main Background Color For Most Elements -->
+        <LinearGradientBrush x:Key="BlackBackgroundGradient" 
+            EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="{StaticResource DefaultBackgroundColor}" Offset="1"/>
+            <GradientStop Color="{StaticResource DefaultBackgroundColor}"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="GrayWhiteGradient" 
+            EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFB9B9B9"/>
+            <GradientStop Color="#FF424242" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="GrayWhiteReversedGradient" 
+            EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFD9D9D9" Offset="1"/>
+            <GradientStop Color="#FF626262" Offset="0"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="GrayWhiteHighlightedGradient" 
+            EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFE9E9E9"/>
+            <GradientStop Color="#FF727272" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="PlaylistGradient_OnHover" 
+            EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FF76767A"/>
+            <GradientStop Color="#FF56565A" Offset="1"/>
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="LightBlackColor" Color="#FF292929"/>
+
+        <LinearGradientBrush x:Key="ShowMore_Background_Enter" 
+            EndPoint="0.5,1" StartPoint="0.5,0" >
+            <GradientStop Color="#FF292929" Offset="1"/>
+            <GradientStop Color="#FF858585" Offset="0.48"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="ShowMore_Background_Click" 
+            EndPoint="0.5,1" StartPoint="0.5,0" >
+            <GradientStop Color="#FF858585" Offset="1"/>
+            <GradientStop Color="#FF292929" Offset="0.48"/>
+        </LinearGradientBrush>
+
+        <!-- LinearGradientColor has some problems to work so I'm keeping this Solid -->
+        <SolidColorBrush x:Key="MusicElement_Background_Border" Color="{StaticResource DefaultBackgroundColor}"/>
+
+        <LinearGradientBrush x:Key="MusicElement_OnHoverGradient" 
+            EndPoint="0.5,1" StartPoint="0.5,0" >
+            <GradientStop Color="#FF76767A"/>
+            <GradientStop Color="#FF36363A" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="MusicElement_SelectionGradient" 
+            EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FF36363A"/>
+            <GradientStop Color="#FF76767A" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="ModifierBackground_TextBox" 
+            EndPoint="0.5,1" StartPoint="0.5,0" >
+            <GradientStop Color="#FF86868A" Offset="1"/>
+            <GradientStop Color="#FF9F9F9F"/>
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="MainBorder_Color" Color="WhiteSmoke" />
+
+        <!--========================================================-->
+        <!--======================== STYLES ========================-->
+        <!--========================================================-->
+
+        <!-- Main Window -->
+        <Style TargetType="{x:Type Window}" x:Key="MainWindow">
+            <Setter Property="Foreground" Value="{StaticResource DefaultForeground}"/>
+            <Setter Property="Background" Value="{StaticResource BlackBackgroundGradient}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="{StaticResource MainBorder_Color}" />
+        </Style>
+
+        <!-- Show More Button -->
+        <Style TargetType="{x:Type Button}" x:Key="ShowMore_Button">
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ShowMore_Background_Enter}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ShowMore_Background_Click}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type Button}" x:Key="Regular_Button">
+            <Setter Property="Background" Value="{StaticResource BlackBackgroundGradient}"/>
+            <Setter Property="Foreground" Value="{StaticResource DefaultForeground}"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Foreground" Value="{StaticResource DefaultForeground}"/>
+            <Setter Property="Background" Value="{StaticResource BlackBackgroundGradient}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}" x:Key="Modifier_TextBox">
+            <Setter Property="Foreground" Value="{StaticResource DefaultForeground}"/>
+            <Setter Property="Background" Value="{StaticResource ModifierBackground_TextBox}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <!-- ToolTip Global Styl -->
+        <Style TargetType="{x:Type ToolTip}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToolTip">
+                        <Border Name="Border" BorderThickness="1" BorderBrush="White" Background="{StaticResource BlackBackgroundGradient}">
+
+                            <TextBlock Foreground="White" Margin="4" FontSize="12">
+                                <ContentPresenter/>
+                            </TextBlock>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Border list name title -->
+        <Style TargetType="{x:Type Border}" x:Key="BorderListTitle">
+            <Setter Property="Background" Value="{StaticResource LightBlackColor}"/>
+            <Setter Property="BorderThickness" Value="0,1,0,1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource MainBorder_Color}"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+
+        <!-- Slider -->
+        <Style TargetType="{x:Type Slider}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- TextBlocks -->
+        <Style TargetType="{x:Type TextBlock}" x:Key="NormalTextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="{x:Type TextBlock}" x:Key="TitleTextBlock" BasedOn="{StaticResource NormalTextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+
+        <!-- Label Default -->
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Main Border -->
+        <Style TargetType="{x:Type Border}" x:Key="MainBorder">
+            <Setter Property="BorderBrush" Value="{StaticResource MainBorder_Color}"/>
+            <Setter Property="Background" Value="{StaticResource BlackBackgroundGradient}"/>
+        </Style>
+
+        <!-- Inner Border -->
+        <Style TargetType="{x:Type Border}" x:Key="InnerBorder">
+            <Setter Property="BorderBrush" Value="{StaticResource MainBorder_Color}"/>
+            <Setter Property="BorderThickness" Value="0,0,1,0"/>
+        </Style>
+
+        <!-- Main Grid -->
+        <Style TargetType="{x:Type Grid}" x:Key="MainGrid">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <!-- Music Controler Button -->
+        <Style TargetType="{x:Type Button}" x:Name="Main" x:Key="MusicControler_Button">
+            <Setter Property="BorderBrush" Value="#FFAEAEAE"/>
+            <Setter Property="Background" Value="{StaticResource GrayWhiteGradient}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource GrayWhiteHighlightedGradient}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource GrayWhiteReversedGradient}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Work in Progress -->
+        
+        <!--ScrollBars Style-->
+        <!--<Style TargetType="{x:Type ScrollBar}">
+            
+        </Style>-->
+
+        <!--ScrollViewer Style-->
+        <!--<Style TargetType="{x:Type ScrollViewer}" x:Key="ScrollViewer_Default">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <ScrollBar x:Name="PART_VerticalScrollBar" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                       Grid.Column="1" ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Minimum="0" Maximum="{TemplateBinding ScrollableHeight}"
+                                       Cursor="Arrow" AutomationProperties.AutomationId="VerticalScrollBar"
+                                       Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalOffset, Mode=OneWay}">
+                                
+                            </ScrollBar>
+
+                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                    Margin="{TemplateBinding Padding}"
+                                                    Content="{TemplateBinding Content}"
+                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                    CanContentScroll="{TemplateBinding CanContentScroll}"/>
+
+                            <Rectangle x:Name="Corner" Grid.Column="1" Grid.Row="1"
+                                       Fill="Gray"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
+
+        <!-- Music Length Slider -->
+        <Style TargetType="{x:Type Thumb}" x:Key="Music_Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Rectangle Fill="White" Name="Prostokat"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type Slider}" x:Key="Music_Slider">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="IsMoveToPointEnabled" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Slider}">
+                        <Grid Background="Transparent">
+                            <Border x:Name="PART_Border" Background="#4C0080FF" HorizontalAlignment="Left"/>
+
+                            <Track x:Name="PART_Track">
+                                <Track.Thumb>
+                                    <Thumb Width="1" Height="{TemplateBinding Height}">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="{x:Type Thumb}">
+                                                <Rectangle Fill="White"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Preview Music Slider -->
+        <Style TargetType="{x:Type Slider}" x:Key="PreviewMusic_Slider">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="IsMoveToPointEnabled" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Slider}">
+                        <Grid Background="Transparent">
+                            <Track x:Name="PART_Track">
+                                <Track.Thumb>
+                                    <Thumb Width="3" Height="{TemplateBinding Height}" x:Name="Thumb">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="{x:Type Thumb}">
+                                                <Rectangle Fill="#B2808080" x:Name="ThumbGraphic"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Other Sliders (volume, playback speed) -->
+        <Style TargetType="{x:Type Slider}" x:Key="Other_Slider">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="IsMoveToPointEnabled" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Slider}">
+                        <Grid Margin="3,0,3,0" Background="Transparent">
+                            <Border x:Name="PART_Border" Background="#FF787878" Height="5" Width="{TemplateBinding Width}"/>
+
+                            <Track x:Name="PART_Track">
+                                <Track.Thumb>
+                                    <Thumb Width="22" Height="14" 
+                                           x:Name="Thumb"
+                                           DragStarted="Thumb_DragStarted" 
+                                           DragCompleted="Thumb_DragCompleted" 
+                                           MouseEnter="Thumb_MouseEnter" 
+                                           MouseLeave="Thumb_MouseLeave">
+
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="{x:Type Thumb}">
+                                                <Border BorderBrush="#FFDEDEDE" BorderThickness="1.4" x:Name="Border" CornerRadius="3"
+                                                        Background="{StaticResource GrayWhiteGradient}">
+
+                                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                        <Border Height="8" Width="1" CornerRadius="5" BorderThickness="1" BorderBrush="White"/>
+                                                        <Border Height="8" Width="1" Margin="2,0,0,0" CornerRadius="5" BorderThickness="1" BorderBrush="White"/>
+                                                        <Border Height="8" Width="1" Margin="2,0,0,0" CornerRadius="5" BorderThickness="1" BorderBrush="White"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        
+        
+    </Application.Resources>
+</Application>

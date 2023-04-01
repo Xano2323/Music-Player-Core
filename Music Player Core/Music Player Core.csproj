@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!--<TargetFramework>net5.0-windows</TargetFramework>-->
+    <TargetFramework>net5.0-windows</TargetFramework>
+	  <!--<LangVersion>preview</LangVersion>-->
+    <RootNamespace>Music_Player_Core</RootNamespace>
+    <UseWPF>True</UseWPF>
+	<UseWindowsForms>true</UseWindowsForms>
+	<ApplicationIcon>Ikona.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Cancel.png" />
+    <None Remove="Resources\Loop Not.png" />
+    <None Remove="Resources\Loop.png" />
+    <None Remove="Resources\Muted.png" />
+    <None Remove="Resources\Next Normal.png" />
+    <None Remove="Resources\Next Random.png" />
+    <None Remove="Resources\Next Weighted.png" />
+    <None Remove="Resources\Next.png" />
+    <None Remove="Resources\Pause.png" />
+    <None Remove="Resources\Play.png" />
+    <None Remove="Resources\Playlist play.png" />
+    <None Remove="Resources\Plus.png" />
+    <None Remove="Resources\Previous.png" />
+    <None Remove="Resources\Random Off.png" />
+    <None Remove="Resources\Random Rated.png" />
+    <None Remove="Resources\Restart.png" />
+    <None Remove="Resources\Show More.png" />
+    <None Remove="Resources\Stop.png" />
+    <None Remove="Resources\Strzala.png" />
+    <None Remove="Resources\Unmuted.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="newtonsoft.json" Version="13.0.1" />
+    <PackageReference Include="taglibsharp" Version="2.2.0" />
+    <PackageReference Include="WinCopies.WindowsAPICodePack.Shell" Version="2.10.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Cancel.png" />
+    <Resource Include="Resources\Loop Not.png" />
+    <Resource Include="Resources\Loop.png" />
+    <Resource Include="Resources\Muted.png" />
+    <Resource Include="Resources\Next Normal.png" />
+    <Resource Include="Resources\Next Random.png" />
+    <Resource Include="Resources\Next Weighted.png" />
+    <Resource Include="Resources\Next.png" />
+    <Resource Include="Resources\Pause.png" />
+    <Resource Include="Resources\Play.png" />
+    <Resource Include="Resources\Playlist play.png" />
+    <Resource Include="Resources\Plus.png" />
+    <Resource Include="Resources\Previous.png" />
+    <Resource Include="Resources\Random Off.png" />
+    <Resource Include="Resources\Random Rated.png" />
+    <Resource Include="Resources\Restart.png" />
+    <Resource Include="Resources\Show More.png" />
+    <Resource Include="Resources\Stop.png" />
+    <Resource Include="Resources\Strzala.png" />
+    <Resource Include="Resources\Unmuted.png" />
+  </ItemGroup>
+
+</Project>
