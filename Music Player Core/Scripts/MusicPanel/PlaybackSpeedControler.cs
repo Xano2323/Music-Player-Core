@@ -30,7 +30,7 @@ namespace Music_Player.MusicPanel
                     value = Convert.ToDouble(Slider.Value.ToString("0.0"));
 
                 Slider.Value = value;
-                MediaElementControler.Instance.PlaybackSpeed = Slider.Value;
+                MediaElementController.Instance.PlaybackSpeed = Slider.Value;
             }
             
             Display.Text = Slider.Value + "x";

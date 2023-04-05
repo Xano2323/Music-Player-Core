@@ -42,7 +42,7 @@ namespace Music_Player.MusicPanel
 
             Slider.Value = Convert.ToInt32(Utility.Mathf.Clamp(Slider.Value, 0d, 100d));
             Display.Text = Slider.Value + "%";
-            MediaElementControler.Instance.Volume = Slider.Value / 100d;
+            MediaElementController.Instance.Volume = Slider.Value / 100d;
 
             if (valueChangedManually)
                 MuteUnmute.Instance.Unmute();

@@ -30,12 +30,12 @@ namespace Music_Player.MusicPanel.Sliders
 
         private void MusicLenght_Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (MediaElementControler.Instance.PlaylistControler.currentlyPlaying != null)
+            if (MediaElementController.Instance.PlaylistControler.currentlyPlaying != null)
             {
                 Border.Width = Slider.Value / Slider.Maximum * Slider.ActualWidth;
 
                 if (!changedManually)
-                    MediaElementControler.Instance.SetTime(Slider.Value / Slider.Maximum);
+                    MediaElementController.Instance.SetTime(Slider.Value / Slider.Maximum);
             }
         }
 

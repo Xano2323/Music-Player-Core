@@ -284,7 +284,7 @@ namespace Music_Player.MusicPanel
             Music_MediaElement.Source = new Uri(currentlyPlaying.MusicPath);
             Music_MediaElement.Play();
             PlayPauseChangeIcon();
-            MediaElementControler.Instance.SetTime();
+            MediaElementController.Instance.SetTime();
             MusicInformationControler.Instance.ShowInformations();
             MusicInformationControler.Instance.UpdateInformations(currentlyPlaying);
         }

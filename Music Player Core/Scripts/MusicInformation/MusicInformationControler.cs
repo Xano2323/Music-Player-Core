@@ -94,7 +94,7 @@ namespace Music_Player.MusicInformation
         {
             // Row 1
             MainWindow.CurrentDuration_TextBlock.Text = "0:00";
-            UpdateAlbumCover(MediaElementControler.Instance.PlaylistControler.currentlyPlaying.MusicPath);
+            UpdateAlbumCover(MediaElementController.Instance.PlaylistControler.currentlyPlaying.MusicPath);
             _fullName.ToolTip = _fullName.Text = musicElement.MusicName;
             _groups.ToolTip = _groups.Text = musicElement.Groups;
             _tags.ToolTip = _tags.Text = musicElement.Tags;

@@ -12,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Windows.Controls;
-
+using Microsoft.Win32;
 
 namespace Music_Player
 {
@@ -77,7 +77,7 @@ namespace Music_Player
             _ = new MusicLengthSlider(MusicTimer_Slider, CurrentDuration_TextBlock);
             _ = new MusicLengthPreviewSlider(PreviewMusicTimer_Slider, MusicTimer_Slider, CurrentDuration_TextBlock, Music_MediaElement);
             _ = new MuteUnmute(MuteUnmute_Button, volumeControler);
-            _ = new MediaElementControler(Music_MediaElement, MediaElementHolder_Border, CurrentDuration_TextBlock, MaxDuration_TextBlock, MediaButtons_Grid);
+            _ = new MediaElementController(Music_MediaElement, MediaElementHolder_Border, CurrentDuration_TextBlock, MaxDuration_TextBlock, MediaButtons_Grid);
             _ = new MusicInformationControler(MusicInformation_Grid, this);
             imageViewer = new ImageViewer();
             App.currentThumbBrush = Application.Current.Resources["GrayWhiteGradient"] as LinearGradientBrush;
@@ -269,7 +269,7 @@ namespace Music_Player
             MusicLengthSlider.Instance.SetValue((Convert.ToDouble(Music_MediaElement.Position.Ticks) + SECONDS_WINDUP * TimeSpan.TicksPerSecond)
                 / Convert.ToDouble(PlaylistControler.Instance.currentlyPlaying.DurationTimeSpan.Ticks), false);
 
-            MediaElementControler.Instance.SetTime();
+            MediaElementController.Instance.SetTime();
         }
 
         /// <summary>
@@ -283,12 +283,12 @@ namespace Music_Player
             MusicLengthSlider.Instance.SetValue((Convert.ToDouble(Music_MediaElement.Position.Ticks) - SECONDS_WINDUP * TimeSpan.TicksPerSecond)
                 / Convert.ToDouble(PlaylistControler.Instance.currentlyPlaying.DurationTimeSpan.Ticks), false);
 
-            MediaElementControler.Instance.SetTime();
+            MediaElementController.Instance.SetTime();
         }
 
         private void JumpToMusic_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (PlaylistControler.currentPlaylist?.listOfMusicElements.Count == 0 
+            if (PlaylistControler.currentPlaylist?.listOfMusicElements.Count == 0
                 || PlaylistControler.Instance.currentlyPlaying is null)
                 return;
 
@@ -305,6 +305,7 @@ namespace Music_Player
                 focusedElement.BringIntoView();
                 SelectionHandler.SelectElements(new SelectedMusicElement(border as Border, PlaylistControler.Instance.currentlyPlaying.Index, PlaylistControler.currentPlaylist));
             }
+
         }
 
         private void Loop_Button_Click(object sender, RoutedEventArgs e)
@@ -353,6 +354,34 @@ namespace Music_Player
         private void MusicList_ScrollViewer_MouseLeave(object sender, MouseEventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// Button for adding files via FileDialog
+        /// </summary>
+        private void AddMusicsFromDirectoryDialog_Button_Click(object sender, RoutedEventArgs e)
+        {
+            MediaElementController.BlockDragAndDrop = true;
+
+            FileDialog fileDialog = new OpenFileDialog()
+            {
+                Multiselect = true
+            };
+
+            fileDialog.ShowDialog();
+
+            string[] fileNames = fileDialog.FileNames;
+
+            if (DisplayedList.Playlist is null)
+            {
+                MediaElementController.Instance.AddMusicsFromFileDialog(fileNames);
+            }
+            else
+            {
+                DisplayedList.AddMusicsFromStringPathsToDisplayedPlaylist(fileNames);
+            }
+
+            MediaElementController.BlockDragAndDrop = false;
         }
     }
 }
