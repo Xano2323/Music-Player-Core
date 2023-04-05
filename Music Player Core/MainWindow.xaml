@@ -207,8 +207,17 @@
                         </Grid.ColumnDefinitions>
 
                         <Button Style="{StaticResource MusicControler_Button}" BorderThickness="1,1,1,1"
-                                Width="22" Height="19" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1" Margin="0,0,-119,-1" Click="JumpToMusic_Button_Click">
+                                Width="22" Height="19" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1" 
+                                Margin="0,0,-119,-1" Click="JumpToMusic_Button_Click">
                             <Image Source="pack://application:,,,/Resources/Strzala.png"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           ToolTip="Scroll To Music"/>
+                        </Button>
+
+                        <Button Style="{StaticResource MusicControler_Button}" BorderThickness="1,1,1,1"
+                                Width="22" Height="19" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1" 
+                                Margin="0,0,-94,-1" Click="AddMusicsFromDirectoryDialog_Button_Click">
+                            <Image Source="pack://application:,,,/Resources/Plus new music.png" Width="15"
                                            RenderOptions.BitmapScalingMode="HighQuality"
                                            ToolTip="Scroll To Music"/>
                         </Button>

@@ -8,15 +8,16 @@ using System.Windows.Controls;
 
 namespace Music_Player.MusicPanel
 {
-    public class MediaElementControler
+    public class MediaElementController
     {
         // References
-        public static MediaElementControler Instance { get; set; }
+        public static MediaElementController Instance { get; set; }
         public PlaylistControler PlaylistControler { get; }
         private MediaElement Music_MediaElement { get; }
         private Border MediaHolder { get; }
         private TextBlock CurrentDuration_TextBlock { get; }
         private TextBlock MaxDuration_TextBlock { get; }
+        public static bool BlockDragAndDrop { get; set; }
 
         // Properties
         public double Volume
@@ -32,12 +33,12 @@ namespace Music_Player.MusicPanel
 
 
         // Constructor
-        public MediaElementControler(MediaElement _mediaElement, Border _mediaHolder,
+        public MediaElementController(MediaElement _mediaElement, Border _mediaHolder,
             TextBlock _currentDuration, TextBlock _maxDuration, Grid _mediaButtons)
         {
             if (Instance != null)
             {
-                string MSG = $"Instancja klasy {nameof(MediaElementControler)} została utworzona 2 razy, " +
+                string MSG = $"Instancja klasy {nameof(MediaElementController)} została utworzona 2 razy, " +
                     $"instancja ta powinna być pseudo-statyczna";
 
                 MessageBox.Show(MSG, "Powielenie instancji klasy");
@@ -68,6 +69,9 @@ namespace Music_Player.MusicPanel
         /// </summary>
         private void Border_DragEnter(object sender, DragEventArgs e)
         {
+            if (BlockDragAndDrop)
+                return;
+
             PlaylistControler.validMusicNames.Clear();
             e.Effects = DragDropEffects.Copy;
 
@@ -76,8 +80,7 @@ namespace Music_Player.MusicPanel
             if (fileNames == null)
                 return;
 
-            foreach (string fileName in fileNames)
-                PlaylistControler.AddMusicFile(fileName);
+            AddMusicsToMediaPreview(fileNames);
         }
 
         /// <summary>
@@ -85,8 +88,11 @@ namespace Music_Player.MusicPanel
         /// </summary>
         private void Border_DragLeave(object sender, DragEventArgs e)
         {
+            if (BlockDragAndDrop)
+                return;
+
             e.Effects = DragDropEffects.None;
-            PlaylistControler.validMusicNames.Clear();
+            ClearMusicsArray();
         }
 
         /// <summary>
@@ -94,8 +100,10 @@ namespace Music_Player.MusicPanel
         /// </summary>
         private void Border_Drop(object sender, DragEventArgs e)
         {
-            if (PlaylistControler.validMusicNames.Count > 0)
-                PlaylistControler.CreatePlaylist();
+            if (BlockDragAndDrop)
+                return;
+
+            PlayMusicsFromValidatedMusics();
         }
 
         /// <summary>
@@ -110,6 +118,40 @@ namespace Music_Player.MusicPanel
         private void Music_MediaElement_MediaEnded(object sender, RoutedEventArgs e) => 
             PlaylistControler.PlayNext();
         #endregion MediaHolder Events
+
+        /// <summary>
+        /// If there is no displayed list it will add files to temporary, independent playlist
+        /// </summary>
+        public void AddMusicsFromFileDialog(string[] fileNames)
+        {
+            AddMusicsToMediaPreview(fileNames);
+            PlayMusicsFromValidatedMusics();
+            ClearMusicsArray();
+        }
+
+        /// <summary>
+        /// Validates names and adds correct music files to queue
+        /// </summary>
+        private void AddMusicsToMediaPreview(string[] fileNames)
+        {
+            foreach (string fileName in fileNames)
+                PlaylistControler.AddMusicFile(fileName);
+        }
+
+        /// <summary>
+        /// If list of validated musics exists it will play it
+        /// </summary>
+        private void PlayMusicsFromValidatedMusics()
+        {
+            if (PlaylistControler.validMusicNames.Count > 0)
+                PlaylistControler.CreatePlaylist();
+        }
+
+        /// <summary>
+        /// Clears current musics array
+        /// </summary>
+        private void ClearMusicsArray() =>
+            PlaylistControler.validMusicNames.Clear();
 
         /// <summary>
         /// Sets pointer at specific music time tick when changed with a slider

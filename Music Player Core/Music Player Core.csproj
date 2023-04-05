@@ -23,6 +23,7 @@
     <None Remove="Resources\Pause.png" />
     <None Remove="Resources\Play.png" />
     <None Remove="Resources\Playlist play.png" />
+    <None Remove="Resources\Plus new music.png" />
     <None Remove="Resources\Plus.png" />
     <None Remove="Resources\Previous.png" />
     <None Remove="Resources\Random Off.png" />
@@ -52,6 +53,7 @@
     <Resource Include="Resources\Pause.png" />
     <Resource Include="Resources\Play.png" />
     <Resource Include="Resources\Playlist play.png" />
+    <Resource Include="Resources\Plus new music.png" />
     <Resource Include="Resources\Plus.png" />
     <Resource Include="Resources\Previous.png" />
     <Resource Include="Resources\Random Off.png" />

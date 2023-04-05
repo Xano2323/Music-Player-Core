@@ -33,7 +33,7 @@ namespace Music_Player.MusicOrganization
                 select line;
 
             foreach (string line in collection)
-                if (MediaElementControler.Instance.PlaylistControler.IsMusicType(line))
+                if (MediaElementController.Instance.PlaylistControler.IsMusicType(line))
                     DisplayedList.ValidMusicName(line);
 
             DisplayedList.SavePlaylist();

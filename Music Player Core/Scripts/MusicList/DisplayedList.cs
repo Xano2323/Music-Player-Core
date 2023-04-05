@@ -83,7 +83,18 @@ namespace Music_Player.MusicList
             if (fileNames == null)
                 return;
 
-            foreach (string fileName in from fileName in fileNames where MediaElementControler.Instance.PlaylistControler.IsMusicType(fileName) select fileName)
+            AddMusicsFromStringPathsToDisplayedPlaylist(fileNames);
+        }
+
+        public static void AddMusicsFromStringPathsToDisplayedPlaylist(string[] fileNames)
+        {
+            var collection =
+                from fileName
+                in fileNames
+                where MediaElementController.Instance.PlaylistControler.IsMusicType(fileName)
+                select fileName;
+
+            foreach (string fileName in collection)
                 ValidMusicName(fileName);
 
             SavePlaylist();
