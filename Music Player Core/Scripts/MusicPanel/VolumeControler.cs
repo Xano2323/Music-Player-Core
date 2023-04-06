@@ -10,7 +10,7 @@ namespace Music_Player.MusicPanel
     {
         private bool valueChangedManually = true;
         /// <summary>
-        /// Property used for external classes
+        /// Current percentage volume from 0-100
         /// </summary>
         public int CurrentVolume
         {

@@ -51,6 +51,8 @@ namespace Music_Player.MusicPanel
             CurrentDuration_TextBlock = _currentDuration;
             MaxDuration_TextBlock = _maxDuration;
             PlaylistControler = new PlaylistControler(_mediaButtons.Children, Music_MediaElement);
+            // póki co 1d na starcie żeby dźwięk się zczytał z programu a nie z ustawień windowsa
+            Volume = 1d;
 
             Music_MediaElement.MediaOpened += Music_MediaElement_MediaOpened;
             Music_MediaElement.MediaEnded += Music_MediaElement_MediaEnded;
