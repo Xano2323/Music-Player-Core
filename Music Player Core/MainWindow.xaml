@@ -416,6 +416,7 @@
 
                     <!-- Musics Placeholder -->
                     <ScrollViewer x:Name="MusicList_ScrollViewer"
+                                  Style="{StaticResource ScrollViewerCustom}"
                                   Grid.Row="1" 
                                   VerticalScrollBarVisibility="Auto" 
                                   HorizontalScrollBarVisibility="Disabled" 
