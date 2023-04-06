@@ -4,11 +4,11 @@
              xmlns:local="clr-namespace:Music_Player"
              Startup="Application_Startup">
     <Application.Resources>
-        
+
         <!--========================================================-->
         <!--======================== COLORS ========================-->
         <!--========================================================-->
-        
+
         <SolidColorBrush x:Key="DefaultForeground" Color="WhiteSmoke"/>
 
         <Color x:Key="DefaultBackgroundColor">
@@ -229,50 +229,6 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Work in Progress -->
-        
-        <!--ScrollBars Style-->
-        <!--<Style TargetType="{x:Type ScrollBar}">
-            
-        </Style>-->
-
-        <!--ScrollViewer Style-->
-        <!--<Style TargetType="{x:Type ScrollViewer}" x:Key="ScrollViewer_Default">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
-                        <Grid Background="{TemplateBinding Background}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <ScrollBar x:Name="PART_VerticalScrollBar" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                       Grid.Column="1" ViewportSize="{TemplateBinding ViewportHeight}"
-                                       Minimum="0" Maximum="{TemplateBinding ScrollableHeight}"
-                                       Cursor="Arrow" AutomationProperties.AutomationId="VerticalScrollBar"
-                                       Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalOffset, Mode=OneWay}">
-                                
-                            </ScrollBar>
-
-                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
-                                                    Margin="{TemplateBinding Padding}"
-                                                    Content="{TemplateBinding Content}"
-                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                    CanContentScroll="{TemplateBinding CanContentScroll}"/>
-
-                            <Rectangle x:Name="Corner" Grid.Column="1" Grid.Row="1"
-                                       Fill="Gray"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>-->
-
         <!-- Music Length Slider -->
         <Style TargetType="{x:Type Thumb}" x:Key="Music_Thumb">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -376,8 +332,81 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
-        
-        
+
+        <!-- ScrollViewer Custom -->
+        <Style x:Key="ScrollViewerCustom" TargetType="{x:Type ScrollViewer}">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <ScrollContentPresenter Grid.Column="0" Grid.ColumnSpan="2" CanContentScroll="{TemplateBinding CanContentScroll}" />
+
+                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                       Style="{DynamicResource ScrollBarCustom}"
+                                       Grid.Column="1"
+                                       Value="{TemplateBinding VerticalOffset}"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Margin" Value="0,0,0,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <!-- Thumb Properties -->
+                        <Border CornerRadius="14,0,0,14"
+                                Background="#FF747474"
+                                BorderBrush="#FFB0B0B0"
+                                BorderThickness="0,2,0,2">
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="VerticalScrollBar" TargetType="{x:Type ScrollBar}">
+            <Grid Margin="0,4">
+                <!-- Scrollbar Color -->
+                <Border Background="#FF505050"
+                        CornerRadius="14,0,0,14" 
+                        MouseDown="ScrollBar_Background_Border_MouseDown" />
+
+                <Track x:Name="PART_Track" IsDirectionReversed="true">
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource ScrollBarThumb}" />
+                    </Track.Thumb>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+
+        <Style x:Key="ScrollBarCustom" TargetType="{x:Type ScrollBar}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Vertical">
+                    <Setter Property="Width" Value="17" />
+                    <Setter Property="IsManipulationEnabled" Value="True"/>
+                    <Setter Property="Template" Value="{StaticResource VerticalScrollBar}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </Application.Resources>
 </Application>
