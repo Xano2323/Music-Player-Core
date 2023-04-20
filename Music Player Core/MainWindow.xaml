@@ -433,7 +433,7 @@
                                   MouseEnter="MusicList_ScrollViewer_MouseEnter"
                                   MouseLeave="MusicList_ScrollViewer_MouseLeave">
 
-                        <StackPanel Orientation="Vertical"/>
+                        <StackPanel Orientation="Vertical" Margin="0,0,0,-1"/>
                     </ScrollViewer>
 
                     <!-- Search panel -->
