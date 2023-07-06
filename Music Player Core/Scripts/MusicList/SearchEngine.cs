@@ -100,7 +100,7 @@ namespace Music_Player.MusicList
             decimal min = CheckSide(text, "-", "Left");
             decimal max = CheckSide(text, "-", "Right");
 
-            if (min == -1 || max == 1)
+            if (min == -1 || max == -1)
                 return false;
 
             return decimal.TryParse(rating, out decimal result) && result >= min && result <= max;
