@@ -3,9 +3,9 @@
 .Net 5.0: <br />
 https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-5.0.408-windows-x64-installer
 
-Doesn't work on Linux yet I may rewrite code on Avalonia in the future to support it.
-
-It's mainly used by me so usage of this program may not be obvious. <br />
+It's mainly used by me so usage of this program may not be obvious to people who find it, <br />
+so here is some example how to use it: <br />
+First you need to build this project, find in google how to build it. <br />
 Create new playlist with "+" sign in the playlist section. <br />
 Load playlist (double click or right click -> Load) then drag and drop music files on the right section. <br />
 Playback speed is bugged right now so you have to wait couple seconds before music is hearable or just restart the music. <br />
