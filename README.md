@@ -4,7 +4,7 @@
 https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-5.0.408-windows-x64-installer
 
 It's mainly used by me so usage of this program may not be obvious to people who find it, <br />
-so here is some example how to use it: <br />
+so here is example how to use it: <br />
 First you need to build this project, find in google how to build it. <br />
 Create new playlist with "+" sign in the playlist section. <br />
 Load playlist (double click or right click -> Load) then drag and drop music files on the right section. <br />
